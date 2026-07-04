@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const mongodbUri = process.env.MONGODB_URI;
 
 if (!mongodbUri) {
@@ -9,6 +11,21 @@ if (!cached) {
   cached = global.mongooseConn = { conn: null, promise: null };
 }
 
-const connectDB = async () => {};
+const connectDB = async () => {
+  if (cached.conn) {
+    return cached.conn;
+  }
 
-export default connectDB; 
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(mongodbUri).then(c=>c.connection)
+  }
+
+  try {
+    const conn = await cached.promise;
+    return conn;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export default connectDB;
