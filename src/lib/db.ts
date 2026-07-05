@@ -17,7 +17,7 @@ const connectDB = async () => {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(mongodbUri).then(c=>c.connection)
+    cached.promise = mongoose.connect(mongodbUri).then((c) => c.connection);
   }
 
   try {
