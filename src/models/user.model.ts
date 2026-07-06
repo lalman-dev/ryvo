@@ -4,6 +4,7 @@ interface User extends Document {
   name: string;
   email: string;
   password?: string;
+  role: "user" | "partner" | "admin";
 }
 
 const userSchema = new mongoose.Schema<User>(
@@ -18,6 +19,11 @@ const userSchema = new mongoose.Schema<User>(
     },
     password: {
       type: String,
+    },
+    role: {
+      type: String,
+      default: "user",
+      enum: ["user", "partner", "admin"],
     },
   },
   { timestamps: true },
