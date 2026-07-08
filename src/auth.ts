@@ -34,8 +34,40 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!isMatched) {
           throw Error("incorrect password");
         }
-        return user;
+        return {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      ((token.name = user.name),
+        (token.id = user.id),
+        (token.email = user.email),
+        (token.role = user.role));
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        ((session.user.name = token.name),
+          (session.user.id = token.id as string),
+          (session.user.email = token.email as string),
+          (session.user.role = token.role as string));
+      }
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/signin",
+    error: "/signin",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 10 * 24 * 60 * 60,
+  },
+  secret: process.env.AUTH_SECRET,
 });
