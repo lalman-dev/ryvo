@@ -1,11 +1,6 @@
-import React from 'react'
-
 const page = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div className="w-full min-h-screen bg-white">sawadi kha
+  </div>;
+};
 
-export default page
+export default page;
