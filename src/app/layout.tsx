@@ -13,23 +13,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title:
-    "Ryvo — A full-stack, AI-ready vehicle booking platform built with Next.js",
-  description:
-    "Ryvo is a full-stack vehicle booking platform built with Next.js, featuring real-time ride tracking, video KYC, secure authentication, online payments, and a scalable architecture.",
+  title: "Ryvo — Vehicle Booking",
+  description: "Book your perfect vehicle with Ryvo",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-white`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
