@@ -3,7 +3,7 @@ import mongoose, { Schema, model, models } from "mongoose";
 export interface IBooking {
   _id: string;
   userId: string;
-  vehicleId: string;
+  vehicleId: mongoose.Types.ObjectId | string;
   startDate: Date;
   endDate: Date;
   totalDays: number;
