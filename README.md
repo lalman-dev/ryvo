@@ -2,7 +2,7 @@
 
 A full-stack vehicle booking platform built with Next.js 16, MongoDB, and Auth.js. Users can browse a curated vehicle catalog, filter by type and price, authenticate with Google, and manage bookings — all in a production-grade dark UI.
 
-**Live Demo → [ryvo.vercel.app](https://ryvo.vercel.app)**  
+**Live Demo → [ryvo-lux.vercel.app](https://ryvo-lux.vercel.app)**  
 **GitHub → [github.com/lalman-dev/ryvo](https://github.com/lalman-dev/ryvo)**
 
 ---

@@ -1,1 +1,93 @@
 @import "tailwindcss";
+
+:root {
+  /* Light mode */
+  --bg-primary: #f4f3f0;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #eeecea;
+  --border-primary: #e0ddd8;
+  --border-secondary: #d4d0ca;
+  --text-primary: #0f0f0f;
+  --text-secondary: #4a4745;
+  --text-muted: #8c8884;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --accent-subtle: #6366f115;
+  --accent-border: #6366f130;
+  --success: #16a34a;
+  --success-subtle: #16a34a15;
+  --error: #dc2626;
+  --error-subtle: #dc262615;
+  --warning: #d97706;
+  --warning-subtle: #d9770615;
+}
+
+.dark {
+  /* Dark mode — black with blue tint */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-tertiary: #1a1a24;
+  --border-primary: #1e1e2e;
+  --border-secondary: #2a2a3e;
+  --text-primary: #f0f0f8;
+  --text-secondary: #a0a0b8;
+  --text-muted: #60607a;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-subtle: #6366f115;
+  --accent-border: #6366f130;
+  --success: #22c55e;
+  --success-subtle: #22c55e15;
+  --error: #f87171;
+  --error-subtle: #f8717115;
+  --warning: #fbbf24;
+  --warning-subtle: #fbbf2415;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: white;
+}
+
+/* Input autofill fix */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-tertiary) inset;
+  -webkit-text-fill-color: var(--text-primary);
+}
