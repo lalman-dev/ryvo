@@ -26,9 +26,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ vehicles });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch vehicles" },
-      { status: 500 },
-    );
+    console.error("VEHICLES ERROR:", error);
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
