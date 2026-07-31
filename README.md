@@ -9,7 +9,7 @@ A full-stack vehicle booking platform built with Next.js 16, MongoDB, and Auth.j
 
 ## Screenshots
 
-> _(Add screenshots after deployment — landing page, vehicles listing, booking flow, my bookings)_
+> 
 
 ---
 
