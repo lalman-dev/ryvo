@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SessionProvider from "@/components/ui/SessionProvider";
+import ThemeProvider from "@/components/ui/ThemeProvider";
 import Navbar from "@/components/ui/Navbar";
 
 const geistSans = Geist({
@@ -15,8 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ryvo — Vehicle Booking",
-  description: "Book your perfect vehicle with Ryvo",
+  title: "Ryvo — Premium Vehicle Booking",
+  description:
+    "Book premium vehicles instantly. Sedans, SUVs, luxury cars and more.",
 };
 
 export default function RootLayout({
@@ -25,14 +27,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          <Navbar />
-          <div className="pt-16">{children}</div>
-        </SessionProvider>
+        <ThemeProvider>
+          <SessionProvider>
+            <Navbar />
+            <div className="pt-16">{children}</div>
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
