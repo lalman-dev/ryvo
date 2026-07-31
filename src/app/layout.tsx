@@ -17,8 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Ryvo — Premium Vehicle Booking",
-  description:
-    "Book premium vehicles instantly. Sedans, SUVs, luxury cars and more.",
+  description: "Book premium vehicles instantly.",
 };
 
 export default function RootLayout({
@@ -34,7 +33,7 @@ export default function RootLayout({
         <ThemeProvider>
           <SessionProvider>
             <Navbar />
-            <div className="pt-16">{children}</div>
+            <div style={{ paddingTop: "64px" }}>{children}</div>
           </SessionProvider>
         </ThemeProvider>
       </body>
