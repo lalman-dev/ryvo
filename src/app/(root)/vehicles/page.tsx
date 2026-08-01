@@ -44,16 +44,32 @@ export default function VehiclesPage() {
   }, [filters, fetchVehicles]);
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        {/* Page title */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Available Vehicles
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--bg-primary)",
+        color: "var(--text-primary)",
+      }}
+    >
+      <div
+        style={{ maxWidth: "1280px", margin: "0 auto", padding: "48px 24px" }}
+      >
+        {/* Page header */}
+        <div style={{ marginBottom: "32px" }}>
+          <h1
+            style={{
+              fontSize: "32px",
+              fontWeight: 800,
+              color: "var(--text-primary)",
+              marginBottom: "6px",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Our Fleet
           </h1>
-          <p className="text-zinc-400">
+          <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>
             {loading
-              ? "Loading..."
+              ? "Loading vehicles..."
               : `${vehicles.length} vehicle${vehicles.length !== 1 ? "s" : ""} available`}
           </p>
         </div>
@@ -63,26 +79,64 @@ export default function VehiclesPage() {
 
         {/* Grid */}
         {loading ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: "24px",
+            }}
+          >
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="bg-zinc-900 border border-zinc-800 rounded-2xl h-80 animate-pulse"
+                style={{
+                  backgroundColor: "var(--bg-secondary)",
+                  border: "1px solid var(--border-primary)",
+                  borderRadius: "16px",
+                  height: "320px",
+                  animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                }}
               />
             ))}
           </div>
         ) : vehicles.length === 0 ? (
-          <div className="text-center py-24">
-            <Car size={40} className="text-zinc-600 mx-auto mb-4" />
-            <p className="text-zinc-400 font-medium">
+          <div style={{ textAlign: "center", padding: "96px 24px" }}>
+            <div
+              style={{
+                width: "56px",
+                height: "56px",
+                borderRadius: "16px",
+                backgroundColor: "var(--bg-secondary)",
+                border: "1px solid var(--border-primary)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+              }}
+            >
+              <Car size={24} style={{ color: "var(--text-muted)" }} />
+            </div>
+            <p
+              style={{
+                color: "var(--text-primary)",
+                fontWeight: 600,
+                marginBottom: "6px",
+              }}
+            >
               No vehicles match your filters
             </p>
-            <p className="text-zinc-600 text-sm mt-1">
+            <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>
               Try adjusting the type or price range
             </p>
           </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+              gap: "24px",
+            }}
+          >
             {vehicles.map((vehicle, i) => (
               <VehicleCard key={vehicle._id} vehicle={vehicle} index={i} />
             ))}
