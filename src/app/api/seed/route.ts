@@ -10,6 +10,7 @@ export async function GET() {
     await seedVehicles();
     return NextResponse.json({ message: "Database seeded successfully" });
   } catch (error) {
-    return NextResponse.json({ error: "Seed failed" }, { status: 500 });
+    console.error("SEED ERROR:", error);
+    return NextResponse.json({ error: String(error) }, { status: 500 });
   }
 }
