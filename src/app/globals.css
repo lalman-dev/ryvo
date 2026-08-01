@@ -51,6 +51,7 @@
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -61,8 +62,10 @@
       background-color 0.2s ease,
       color 0.2s ease;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -77,12 +80,60 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
   }
+
+  /* Selection */
   ::selection {
     background: var(--accent);
     color: white;
   }
+
+  /* Input autofill */
   input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px var(--bg-tertiary) inset;
     -webkit-text-fill-color: var(--text-primary);
+  }
+
+  /* Hide scrollbar for filter capsules */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Pulse animation for skeletons */
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  /* Mobile touch improvements */
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent horizontal overflow */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Responsive grid utilities */
+  @media (max-width: 768px) {
+    .mobile-stack {
+      grid-template-columns: 1fr !important;
+    }
+    .mobile-hide {
+      display: none !important;
+    }
+    .mobile-full {
+      width: 100% !important;
+    }
   }
 }
