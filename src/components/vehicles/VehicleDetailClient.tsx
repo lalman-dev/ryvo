@@ -19,6 +19,28 @@ interface Props {
   vehicle: Vehicle;
 }
 
+const inputStyle = {
+  width: "100%",
+  backgroundColor: "var(--bg-tertiary)",
+  border: "1px solid var(--border-primary)",
+  borderRadius: "10px",
+  padding: "11px 14px",
+  fontSize: "14px",
+  color: "var(--text-primary)",
+  outline: "none",
+  transition: "border-color 0.15s",
+};
+
+const labelStyle = {
+  display: "flex",
+  alignItems: "center",
+  gap: "6px",
+  fontSize: "12px",
+  fontWeight: 500,
+  color: "var(--text-muted)",
+  marginBottom: "6px",
+};
+
 export default function VehicleDetailClient({ vehicle }: Props) {
   const router = useRouter();
   const [startDate, setStartDate] = useState("");
@@ -51,10 +73,8 @@ export default function VehicleDetailClient({ vehicle }: Props) {
       setError("End date must be after start date.");
       return;
     }
-
     setError("");
     setLoading(true);
-
     try {
       const res = await fetch("/api/bookings", {
         method: "POST",
@@ -68,9 +88,7 @@ export default function VehicleDetailClient({ vehicle }: Props) {
           totalPrice,
         }),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         if (res.status === 401) {
           router.push("/login");
@@ -78,8 +96,7 @@ export default function VehicleDetailClient({ vehicle }: Props) {
         }
         throw new Error(data.error || "Booking failed");
       }
-
-      router.push(`/bookings?success=true`);
+      router.push("/bookings?success=true");
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -88,24 +105,82 @@ export default function VehicleDetailClient({ vehicle }: Props) {
   };
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      {/* Navbar */}
-      <div className="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center gap-4">
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--bg-primary)",
+        color: "var(--text-primary)",
+      }}
+    >
+      {/* Breadcrumb bar */}
+      <div
+        style={{
+          borderBottom: "1px solid var(--border-primary)",
+          backgroundColor: "var(--bg-primary)",
+          padding: "0 24px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1280px",
+            margin: "0 auto",
+            height: "52px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              color: "var(--text-muted)",
+              fontSize: "13px",
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "6px 10px",
+              borderRadius: "8px",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "var(--bg-tertiary)";
+              e.currentTarget.style.color = "var(--text-primary)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "var(--text-muted)";
+            }}
           >
-            <ArrowLeft size={16} />
-            Back
+            <ArrowLeft size={14} />
+            Fleet
           </button>
-          <span className="text-zinc-700">|</span>
-          <span className="font-semibold text-white">{vehicle.name}</span>
+          <span style={{ color: "var(--border-secondary)" }}>›</span>
+          <span
+            style={{
+              fontSize: "13px",
+              fontWeight: 600,
+              color: "var(--text-primary)",
+            }}
+          >
+            {vehicle.name}
+          </span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="grid lg:grid-cols-2 gap-12">
+      <div
+        style={{ maxWidth: "1280px", margin: "0 auto", padding: "48px 24px" }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 420px",
+            gap: "48px",
+            alignItems: "start",
+          }}
+        >
           {/* Left — Vehicle info */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
@@ -113,38 +188,109 @@ export default function VehicleDetailClient({ vehicle }: Props) {
             transition={{ duration: 0.4 }}
           >
             {/* Image */}
-            <div className="relative h-72 rounded-2xl overflow-hidden mb-6 bg-zinc-800">
+            <div
+              style={{
+                position: "relative",
+                height: "320px",
+                borderRadius: "16px",
+                overflow: "hidden",
+                marginBottom: "28px",
+                backgroundColor: "var(--bg-tertiary)",
+              }}
+            >
               <Image
                 src={vehicle.image}
                 alt={vehicle.name}
                 fill
-                className="object-cover"
+                style={{ objectFit: "cover" }}
               />
-              <div className="absolute top-4 left-4">
-                <span className="text-xs font-semibold bg-blue-600 text-white px-3 py-1 rounded-full capitalize">
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%)",
+                }}
+              />
+              <div style={{ position: "absolute", top: "16px", left: "16px" }}>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    backgroundColor: "var(--accent)",
+                    color: "white",
+                    padding: "5px 12px",
+                    borderRadius: "9999px",
+                    textTransform: "capitalize",
+                  }}
+                >
                   {vehicle.type}
                 </span>
               </div>
             </div>
 
             {/* Name + price */}
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h1 className="text-3xl font-bold text-white mb-1">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                marginBottom: "24px",
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <h1
+                  style={{
+                    fontSize: "32px",
+                    fontWeight: 800,
+                    color: "var(--text-primary)",
+                    marginBottom: "6px",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
                   {vehicle.name}
                 </h1>
-                <p className="text-zinc-400">{vehicle.description}</p>
+                <p
+                  style={{
+                    color: "var(--text-secondary)",
+                    fontSize: "15px",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {vehicle.description}
+                </p>
               </div>
-              <div className="text-right shrink-0 ml-4">
-                <span className="text-2xl font-bold text-blue-400">
+              <div
+                style={{
+                  textAlign: "right",
+                  marginLeft: "24px",
+                  flexShrink: 0,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "28px",
+                    fontWeight: 800,
+                    color: "var(--accent)",
+                  }}
+                >
                   AED {vehicle.pricePerDay}
-                </span>
-                <span className="text-zinc-500 text-sm block">/day</span>
+                </div>
+                <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+                  /day
+                </div>
               </div>
             </div>
 
             {/* Specs */}
-            <div className="grid grid-cols-3 gap-3 mb-6">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "12px",
+                marginBottom: "28px",
+              }}
+            >
               {[
                 {
                   icon: <Users size={16} />,
@@ -164,15 +310,41 @@ export default function VehicleDetailClient({ vehicle }: Props) {
               ].map((spec) => (
                 <div
                   key={spec.label}
-                  className="bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-center"
+                  style={{
+                    backgroundColor: "var(--bg-secondary)",
+                    border: "1px solid var(--border-primary)",
+                    borderRadius: "12px",
+                    padding: "14px",
+                    textAlign: "center",
+                  }}
                 >
-                  <div className="text-blue-400 flex justify-center mb-1">
+                  <div
+                    style={{
+                      color: "var(--accent)",
+                      display: "flex",
+                      justifyContent: "center",
+                      marginBottom: "6px",
+                    }}
+                  >
                     {spec.icon}
                   </div>
-                  <div className="text-xs text-zinc-500 mb-0.5">
+                  <div
+                    style={{
+                      fontSize: "11px",
+                      color: "var(--text-muted)",
+                      marginBottom: "3px",
+                    }}
+                  >
                     {spec.label}
                   </div>
-                  <div className="text-sm font-semibold capitalize">
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: "var(--text-primary)",
+                      textTransform: "capitalize",
+                    }}
+                  >
                     {spec.value}
                   </div>
                 </div>
@@ -181,16 +353,35 @@ export default function VehicleDetailClient({ vehicle }: Props) {
 
             {/* Features */}
             <div>
-              <h3 className="text-sm font-semibold text-zinc-300 mb-3">
+              <h3
+                style={{
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  color: "var(--text-secondary)",
+                  marginBottom: "12px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
                 Features
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                 {vehicle.features.map((f) => (
                   <span
                     key={f}
-                    className="flex items-center gap-1.5 text-sm bg-zinc-900 border border-zinc-800 text-zinc-300 px-3 py-1.5 rounded-lg"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      fontSize: "13px",
+                      backgroundColor: "var(--bg-secondary)",
+                      border: "1px solid var(--border-primary)",
+                      color: "var(--text-secondary)",
+                      padding: "6px 12px",
+                      borderRadius: "8px",
+                    }}
                   >
-                    <CheckCircle size={13} className="text-blue-400" />
+                    <CheckCircle size={12} style={{ color: "var(--accent)" }} />
                     {f}
                   </span>
                 ))}
@@ -203,65 +394,98 @@ export default function VehicleDetailClient({ vehicle }: Props) {
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
+            style={{ position: "sticky", top: "80px" }}
           >
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 sticky top-24">
-              <h2 className="text-xl font-bold text-white mb-6">
+            <div
+              style={{
+                backgroundColor: "var(--bg-secondary)",
+                border: "1px solid var(--border-primary)",
+                borderRadius: "20px",
+                padding: "28px",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  color: "var(--text-primary)",
+                  marginBottom: "24px",
+                }}
+              >
                 Book this vehicle
               </h2>
 
-              <div className="space-y-4 mb-6">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "16px",
+                  marginBottom: "20px",
+                }}
+              >
                 {/* Start date */}
                 <div>
-                  <label className="flex items-center gap-2 text-xs font-medium text-zinc-400 mb-1.5">
-                    <Calendar size={13} />
-                    Pickup Date
+                  <label style={labelStyle}>
+                    <Calendar size={12} /> Pickup Date
                   </label>
                   <input
                     type="date"
                     min={today}
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    style={inputStyle}
+                    onFocus={(e) =>
+                      (e.target.style.borderColor = "var(--accent)")
+                    }
+                    onBlur={(e) =>
+                      (e.target.style.borderColor = "var(--border-primary)")
+                    }
                   />
                 </div>
 
                 {/* End date */}
                 <div>
-                  <label className="flex items-center gap-2 text-xs font-medium text-zinc-400 mb-1.5">
-                    <Calendar size={13} />
-                    Return Date
+                  <label style={labelStyle}>
+                    <Calendar size={12} /> Return Date
                   </label>
                   <input
                     type="date"
                     min={startDate || today}
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    style={inputStyle}
+                    onFocus={(e) =>
+                      (e.target.style.borderColor = "var(--accent)")
+                    }
+                    onBlur={(e) =>
+                      (e.target.style.borderColor = "var(--border-primary)")
+                    }
                   />
                 </div>
 
                 {/* Pickup location */}
                 <div>
-                  <label className="flex items-center gap-2 text-xs font-medium text-zinc-400 mb-1.5">
-                    <MapPin size={13} />
-                    Pickup Location
+                  <label style={labelStyle}>
+                    <MapPin size={12} /> Pickup Location
                   </label>
                   <select
                     value={pickupLocation}
                     onChange={(e) => setPickupLocation(e.target.value)}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    style={{ ...inputStyle, cursor: "pointer" }}
+                    onFocus={(e) =>
+                      (e.target.style.borderColor = "var(--accent)")
+                    }
+                    onBlur={(e) =>
+                      (e.target.style.borderColor = "var(--border-primary)")
+                    }
                   >
                     <option value="">Select location</option>
-                    <option value="Dubai International Airport">
-                      Dubai International Airport
-                    </option>
-                    <option value="Abu Dhabi Airport">Abu Dhabi Airport</option>
-                    <option value="Downtown Dubai">Downtown Dubai</option>
-                    <option value="Dubai Marina">Dubai Marina</option>
-                    <option value="Abu Dhabi City Centre">
-                      Abu Dhabi City Centre
-                    </option>
-                    <option value="Sharjah">Sharjah</option>
+                    <option>Dubai International Airport</option>
+                    <option>Abu Dhabi Airport</option>
+                    <option>Downtown Dubai</option>
+                    <option>Dubai Marina</option>
+                    <option>Abu Dhabi City Centre</option>
+                    <option>Sharjah</option>
                   </select>
                 </div>
               </div>
@@ -271,39 +495,104 @@ export default function VehicleDetailClient({ vehicle }: Props) {
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-zinc-800 rounded-xl p-4 mb-5"
+                  style={{
+                    backgroundColor: "var(--bg-tertiary)",
+                    border: "1px solid var(--border-primary)",
+                    borderRadius: "12px",
+                    padding: "16px",
+                    marginBottom: "16px",
+                  }}
                 >
-                  <div className="flex justify-between text-sm text-zinc-400 mb-2">
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontSize: "13px",
+                      color: "var(--text-muted)",
+                      marginBottom: "10px",
+                    }}
+                  >
                     <span>
                       AED {vehicle.pricePerDay} × {totalDays} day
                       {totalDays > 1 ? "s" : ""}
                     </span>
                     <span>AED {totalPrice}</span>
                   </div>
-                  <div className="flex justify-between font-bold text-white border-t border-zinc-700 pt-2">
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      fontWeight: 700,
+                      fontSize: "15px",
+                      borderTop: "1px solid var(--border-primary)",
+                      paddingTop: "10px",
+                      color: "var(--text-primary)",
+                    }}
+                  >
                     <span>Total</span>
-                    <span className="text-blue-400">AED {totalPrice}</span>
+                    <span style={{ color: "var(--accent)" }}>
+                      AED {totalPrice}
+                    </span>
                   </div>
                 </motion.div>
               )}
 
               {/* Error */}
               {error && (
-                <p className="text-red-400 text-sm mb-4 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2">
+                <div
+                  style={{
+                    backgroundColor: "var(--error-subtle)",
+                    border: "1px solid var(--error)",
+                    borderRadius: "10px",
+                    padding: "10px 14px",
+                    fontSize: "13px",
+                    color: "var(--error)",
+                    marginBottom: "16px",
+                  }}
+                >
                   {error}
-                </p>
+                </div>
               )}
 
               {/* Submit */}
               <button
                 onClick={handleBooking}
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-700 disabled:text-zinc-500 text-white font-semibold py-3 rounded-xl transition-all"
+                style={{
+                  width: "100%",
+                  backgroundColor: loading
+                    ? "var(--bg-tertiary)"
+                    : "var(--accent)",
+                  color: loading ? "var(--text-muted)" : "white",
+                  fontWeight: 600,
+                  fontSize: "14px",
+                  padding: "13px",
+                  borderRadius: "12px",
+                  border: "none",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  transition: "background-color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  if (!loading)
+                    e.currentTarget.style.backgroundColor =
+                      "var(--accent-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  if (!loading)
+                    e.currentTarget.style.backgroundColor = "var(--accent)";
+                }}
               >
                 {loading ? "Confirming..." : "Confirm Booking"}
               </button>
 
-              <p className="text-xs text-zinc-500 text-center mt-3">
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "var(--text-muted)",
+                  textAlign: "center",
+                  marginTop: "12px",
+                }}
+              >
                 You'll be redirected to sign in if not logged in
               </p>
             </div>

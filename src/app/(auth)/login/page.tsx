@@ -6,39 +6,116 @@ import { Car } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 flex items-center justify-center px-6">
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--bg-primary)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px",
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-md"
+        style={{ width: "100%", maxWidth: "420px" }}
       >
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600/10 border border-blue-500/20 rounded-2xl mb-4">
-            <Car size={26} className="text-blue-400" />
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "56px",
+              height: "56px",
+              backgroundColor: "var(--accent-subtle)",
+              border: "1px solid var(--accent-border)",
+              borderRadius: "16px",
+              marginBottom: "16px",
+            }}
+          >
+            <Car size={24} style={{ color: "var(--accent)" }} />
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            ryvo<span className="text-blue-500">.</span>
+          <h1
+            style={{
+              fontSize: "24px",
+              fontWeight: 800,
+              color: "var(--text-primary)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            ryvo<span style={{ color: "var(--accent)" }}>.</span>
           </h1>
-          <p className="text-zinc-400 text-sm mt-1">
+          <p
+            style={{
+              color: "var(--text-muted)",
+              fontSize: "14px",
+              marginTop: "4px",
+            }}
+          >
             Sign in to book your vehicle
           </p>
         </div>
 
         {/* Card */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
-          <h2 className="text-lg font-semibold text-white mb-2">
+        <div
+          style={{
+            backgroundColor: "var(--bg-secondary)",
+            border: "1px solid var(--border-primary)",
+            borderRadius: "20px",
+            padding: "32px",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "18px",
+              fontWeight: 700,
+              color: "var(--text-primary)",
+              marginBottom: "8px",
+            }}
+          >
             Welcome back
           </h2>
-          <p className="text-zinc-400 text-sm mb-6 leading-relaxed">
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              fontSize: "14px",
+              lineHeight: 1.6,
+              marginBottom: "28px",
+            }}
+          >
             Sign in with your Google account to access bookings, manage
             reservations, and more.
           </p>
 
+          {/* Google button */}
           <button
             onClick={() => signIn("google", { callbackUrl: "/vehicles" })}
-            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-zinc-100 text-zinc-900 font-semibold py-3 rounded-xl transition-all"
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "12px",
+              backgroundColor: "#ffffff",
+              color: "#1a1a2e",
+              fontWeight: 600,
+              fontSize: "14px",
+              padding: "13px",
+              borderRadius: "12px",
+              border: "1px solid var(--border-primary)",
+              cursor: "pointer",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#f4f4f4")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#ffffff")
+            }
           >
             <svg width="18" height="18" viewBox="0 0 18 18">
               <path
@@ -61,15 +138,81 @@ export default function LoginPage() {
             Continue with Google
           </button>
 
-          <p className="text-xs text-zinc-500 text-center mt-4">
+          {/* Divider */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              margin: "20px 0",
+            }}
+          >
+            <div
+              style={{
+                flex: 1,
+                height: "1px",
+                backgroundColor: "var(--border-primary)",
+              }}
+            />
+            <span
+              style={{
+                fontSize: "12px",
+                color: "var(--text-muted)",
+                fontWeight: 500,
+              }}
+            >
+              or
+            </span>
+            <div
+              style={{
+                flex: 1,
+                height: "1px",
+                backgroundColor: "var(--border-primary)",
+              }}
+            />
+          </div>
+
+          {/* Email placeholder — Session 9 */}
+          <div
+            style={{
+              padding: "14px",
+              borderRadius: "12px",
+              border: "1px dashed var(--border-secondary)",
+              textAlign: "center",
+            }}
+          >
+            <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
+              Email & password login coming soon
+            </p>
+          </div>
+
+          <p
+            style={{
+              fontSize: "12px",
+              color: "var(--text-muted)",
+              textAlign: "center",
+              marginTop: "20px",
+            }}
+          >
             By signing in you agree to our terms of service
           </p>
         </div>
 
-        <p className="text-center mt-6">
+        <p style={{ textAlign: "center", marginTop: "20px" }}>
           <a
             href="/vehicles"
-            className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+            style={{
+              fontSize: "13px",
+              color: "var(--text-muted)",
+              textDecoration: "none",
+              transition: "color 0.15s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = "var(--text-primary)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "var(--text-muted)")
+            }
           >
             ← Browse vehicles without signing in
           </a>
