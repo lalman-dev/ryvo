@@ -83,14 +83,17 @@ export default function LoginPage() {
       >
         {/* Logo */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <Image
-            src="/logo.png"
-            alt="Ryvo"
-            width={100}
-            height={40}
-            style={{ objectFit: "contain", marginBottom: "12px" }}
-            priority
-          />
+          <div
+            style={{
+              fontSize: "28px",
+              fontWeight: 800,
+              color: "var(--text-primary)",
+              letterSpacing: "-0.02em",
+              marginBottom: "8px",
+            }}
+          >
+            ryvo<span style={{ color: "var(--accent)" }}>.</span>
+          </div>
           <p
             style={{
               color: "var(--text-muted)",
