@@ -17,7 +17,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Ryvo — Premium Vehicle Booking",
-  description: "Book premium vehicles instantly.",
+  description:
+    "Book premium vehicles instantly. Sedans, SUVs, luxury cars, bikes and more.",
+  keywords: ["vehicle booking", "car rental", "UAE", "Dubai", "Abu Dhabi"],
+  openGraph: {
+    title: "Ryvo — Premium Vehicle Booking",
+    description: "Book premium vehicles instantly.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
