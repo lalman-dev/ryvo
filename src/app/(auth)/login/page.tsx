@@ -1,10 +1,69 @@
 "use client";
 
+import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Car } from "lucide-react";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const inputStyle = {
+    width: "100%",
+    backgroundColor: "var(--bg-tertiary)",
+    border: "1px solid var(--border-primary)",
+    borderRadius: "10px",
+    padding: "11px 14px",
+    fontSize: "14px",
+    color: "var(--text-primary)",
+    outline: "none",
+    transition: "border-color 0.15s",
+  };
+
+  const labelStyle = {
+    display: "block",
+    fontSize: "12px",
+    fontWeight: 600,
+    color: "var(--text-secondary)",
+    marginBottom: "6px",
+    letterSpacing: "0.02em",
+  };
+
+  const handleSubmit = async () => {
+    if (!form.email || !form.password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signIn("credentials", {
+        email: form.email,
+        password: form.password,
+        redirect: false,
+      });
+
+      if (result?.ok) {
+        router.push("/vehicles");
+      } else {
+        setError("Invalid email or password.");
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main
       style={{
@@ -24,31 +83,14 @@ export default function LoginPage() {
       >
         {/* Logo */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "56px",
-              height: "56px",
-              backgroundColor: "var(--accent-subtle)",
-              border: "1px solid var(--accent-border)",
-              borderRadius: "16px",
-              marginBottom: "16px",
-            }}
-          >
-            <Car size={24} style={{ color: "var(--accent)" }} />
-          </div>
-          <h1
-            style={{
-              fontSize: "24px",
-              fontWeight: 800,
-              color: "var(--text-primary)",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            ryvo<span style={{ color: "var(--accent)" }}>.</span>
-          </h1>
+          <Image
+            src="/logo.png"
+            alt="Ryvo"
+            width={100}
+            height={40}
+            style={{ objectFit: "contain", marginBottom: "12px" }}
+            priority
+          />
           <p
             style={{
               color: "var(--text-muted)",
@@ -74,24 +116,168 @@ export default function LoginPage() {
               fontSize: "18px",
               fontWeight: 700,
               color: "var(--text-primary)",
-              marginBottom: "8px",
+              marginBottom: "24px",
             }}
           >
             Welcome back
           </h2>
-          <p
+
+          <div
             style={{
-              color: "var(--text-secondary)",
-              fontSize: "14px",
-              lineHeight: 1.6,
-              marginBottom: "28px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              marginBottom: "20px",
             }}
           >
-            Sign in with your Google account to access bookings, manage
-            reservations, and more.
-          </p>
+            {/* Email */}
+            <div>
+              <label style={labelStyle}>Email</label>
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                style={inputStyle}
+                onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "var(--border-primary)")
+                }
+              />
+            </div>
 
-          {/* Google button */}
+            {/* Password */}
+            <div>
+              <label style={labelStyle}>Password</label>
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Your password"
+                  value={form.password}
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
+                  onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                  style={{ ...inputStyle, paddingRight: "44px" }}
+                  onFocus={(e) =>
+                    (e.target.style.borderColor = "var(--accent)")
+                  }
+                  onBlur={(e) =>
+                    (e.target.style.borderColor = "var(--border-primary)")
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "12px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "none",
+                    border: "none",
+                    color: "var(--text-muted)",
+                    cursor: "pointer",
+                    padding: "4px",
+                  }}
+                >
+                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div
+              style={{
+                backgroundColor: "var(--error-subtle)",
+                border: "1px solid var(--error)",
+                borderRadius: "10px",
+                padding: "10px 14px",
+                fontSize: "13px",
+                color: "var(--error)",
+                marginBottom: "16px",
+              }}
+            >
+              {error}
+            </div>
+          )}
+
+          {/* Submit */}
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              backgroundColor: loading ? "var(--bg-tertiary)" : "var(--accent)",
+              color: loading ? "var(--text-muted)" : "white",
+              fontWeight: 600,
+              fontSize: "14px",
+              padding: "13px",
+              borderRadius: "12px",
+              border: "none",
+              cursor: loading ? "not-allowed" : "pointer",
+              transition: "background-color 0.2s",
+              marginBottom: "20px",
+            }}
+            onMouseEnter={(e) => {
+              if (!loading)
+                e.currentTarget.style.backgroundColor = "var(--accent-hover)";
+            }}
+            onMouseLeave={(e) => {
+              if (!loading)
+                e.currentTarget.style.backgroundColor = "var(--accent)";
+            }}
+          >
+            {loading ? (
+              "Signing in..."
+            ) : (
+              <>
+                Sign In <ArrowRight size={15} />
+              </>
+            )}
+          </button>
+
+          {/* Divider */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              marginBottom: "20px",
+            }}
+          >
+            <div
+              style={{
+                flex: 1,
+                height: "1px",
+                backgroundColor: "var(--border-primary)",
+              }}
+            />
+            <span
+              style={{
+                fontSize: "12px",
+                color: "var(--text-muted)",
+                fontWeight: 500,
+              }}
+            >
+              or
+            </span>
+            <div
+              style={{
+                flex: 1,
+                height: "1px",
+                backgroundColor: "var(--border-primary)",
+              }}
+            />
+          </div>
+
+          {/* Google */}
           <button
             onClick={() => signIn("google", { callbackUrl: "/vehicles" })}
             style={{
@@ -138,54 +324,6 @@ export default function LoginPage() {
             Continue with Google
           </button>
 
-          {/* Divider */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              margin: "20px 0",
-            }}
-          >
-            <div
-              style={{
-                flex: 1,
-                height: "1px",
-                backgroundColor: "var(--border-primary)",
-              }}
-            />
-            <span
-              style={{
-                fontSize: "12px",
-                color: "var(--text-muted)",
-                fontWeight: 500,
-              }}
-            >
-              or
-            </span>
-            <div
-              style={{
-                flex: 1,
-                height: "1px",
-                backgroundColor: "var(--border-primary)",
-              }}
-            />
-          </div>
-
-          {/* Email placeholder — Session 9 */}
-          <div
-            style={{
-              padding: "14px",
-              borderRadius: "12px",
-              border: "1px dashed var(--border-secondary)",
-              textAlign: "center",
-            }}
-          >
-            <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
-              Email & password login coming soon
-            </p>
-          </div>
-
           <p
             style={{
               fontSize: "12px",
@@ -198,23 +336,38 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <p style={{ textAlign: "center", marginTop: "20px" }}>
+        {/* Register link */}
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "20px",
+            fontSize: "14px",
+            color: "var(--text-muted)",
+          }}
+        >
+          Don't have an account?{" "}
+          <Link
+            href="/register"
+            style={{
+              color: "var(--accent)",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            Create one
+          </Link>
+        </p>
+
+        <p style={{ textAlign: "center", marginTop: "12px" }}>
           <a
             href="/vehicles"
             style={{
               fontSize: "13px",
               color: "var(--text-muted)",
               textDecoration: "none",
-              transition: "color 0.15s",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "var(--text-primary)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "var(--text-muted)")
-            }
           >
-            ← Browse vehicles without signing in
+            ← Browse without signing in
           </a>
         </p>
       </motion.div>
