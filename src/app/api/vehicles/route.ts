@@ -14,15 +14,15 @@ export async function GET(req: NextRequest) {
     const query: Record<string, unknown> = { available: true };
 
     if (type && type !== "all") query.type = type;
-    if (minPrice) query.pricePerDay = { $gte: Number(minPrice) };
-    if (maxPrice) {
-      query.pricePerDay = {
-        ...(query.pricePerDay as object),
-        $lte: Number(maxPrice),
-      };
+    if (minPrice || maxPrice) {
+      query.pricePerDay = {};
+      if (minPrice)
+        (query.pricePerDay as Record<string, number>).$gte = Number(minPrice);
+      if (maxPrice)
+        (query.pricePerDay as Record<string, number>).$lte = Number(maxPrice);
     }
 
-    const vehicles = await Vehicle.find(query).sort({ createdAt: -1 });
+    const vehicles = await Vehicle.find(query).sort({ pricePerDay: 1 });
 
     return NextResponse.json({ vehicles });
   } catch (error) {
