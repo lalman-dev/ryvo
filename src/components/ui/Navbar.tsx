@@ -10,72 +10,214 @@ export default function Navbar() {
   const { data: session, status } = useSession();
 
   return (
-    <nav className="fixed top-0 w-full z-50 border-b border-(--border-primary) bg-(--bg-primary)/80 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        borderBottom: "1px solid var(--border-primary)",
+        backgroundColor: "var(--bg-primary)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1280px",
+          margin: "0 auto",
+          padding: "0 24px",
+          height: "64px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         {/* Logo */}
         <Link
           href="/"
-          className="text-xl font-bold tracking-tight text-(--text-primary)"
+          style={{
+            fontSize: "20px",
+            fontWeight: 800,
+            color: "var(--text-primary)",
+            textDecoration: "none",
+            letterSpacing: "-0.02em",
+          }}
         >
-          ryvo<span className="text-(--accent)">.</span>
+          ryvo<span style={{ color: "var(--accent)" }}>.</span>
         </Link>
 
         {/* Right side */}
-        <div className="flex items-center gap-1">
+        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+          {/* Vehicles link */}
           <Link
             href="/vehicles"
-            className="flex items-center gap-2 text-sm text-(--text-secondary) hover:text-(--text-primary) transition-colors px-3 py-2 rounded-xl hover:bg-(--bg-tertiary)"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "var(--text-secondary)",
+              textDecoration: "none",
+              padding: "7px 12px",
+              borderRadius: "10px",
+              transition: "all 0.15s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--text-primary)";
+              e.currentTarget.style.backgroundColor = "var(--bg-tertiary)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--text-secondary)";
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
           >
-            <Car size={15} />
+            <Car size={14} />
             Vehicles
           </Link>
 
+          {/* My Bookings — authenticated only */}
           {status === "authenticated" && (
             <Link
               href="/bookings"
-              className="flex items-center gap-2 text-sm text-(--text-secondary) hover:text-(--text-primary) transition-colors px-3 py-2 rounded-xl hover:bg-(--bg-tertiary)"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "var(--text-secondary)",
+                textDecoration: "none",
+                padding: "7px 12px",
+                borderRadius: "10px",
+                transition: "all 0.15s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "var(--text-primary)";
+                e.currentTarget.style.backgroundColor = "var(--bg-tertiary)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "var(--text-secondary)";
+                e.currentTarget.style.backgroundColor = "transparent";
+              }}
             >
-              <BookOpen size={15} />
+              <BookOpen size={14} />
               My Bookings
             </Link>
           )}
 
-          <div className="w-px h-5 bg-(--border-primary) mx-2" />
+          {/* Divider */}
+          <div
+            style={{
+              width: "1px",
+              height: "20px",
+              backgroundColor: "var(--border-primary)",
+              margin: "0 8px",
+            }}
+          />
 
+          {/* Theme toggle */}
           <ThemeToggle />
 
+          {/* Loading skeleton */}
           {status === "loading" && (
-            <div className="w-8 h-8 rounded-full bg-(--bg-tertiary) animate-pulse ml-2" />
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                backgroundColor: "var(--bg-tertiary)",
+                marginLeft: "8px",
+                animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite",
+              }}
+            />
           )}
 
-          {status === "authenticated" && session?.user ? (
-            <div className="flex items-center gap-2 ml-2">
+          {/* Authenticated */}
+          {status === "authenticated" && session?.user && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginLeft: "8px",
+              }}
+            >
               {session.user.image && (
                 <Image
                   src={session.user.image}
                   alt={session.user.name || "User"}
                   width={30}
                   height={30}
-                  className="rounded-full border border-(--border-primary)"
+                  style={{
+                    borderRadius: "50%",
+                    border: "1px solid var(--border-primary)",
+                  }}
                 />
               )}
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="flex items-center gap-2 text-sm text-(--text-muted) hover:text-(--error) transition-colors px-3 py-2 rounded-xl hover:bg-(--bg-tertiary)"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  color: "var(--text-muted)",
+                  padding: "7px 12px",
+                  borderRadius: "10px",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.15s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--error)";
+                  e.currentTarget.style.backgroundColor = "var(--error-subtle)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--text-muted)";
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }}
               >
-                <LogOut size={15} />
+                <LogOut size={14} />
                 Sign out
               </button>
             </div>
-          ) : status === "unauthenticated" ? (
+          )}
+
+          {/* Unauthenticated */}
+          {status === "unauthenticated" && (
             <button
               onClick={() => signIn("google", { callbackUrl: "/vehicles" })}
-              className="flex items-center gap-2 text-sm bg-(--accent) hover:bg-(--accent-hover) text-white px-4 py-2 rounded-xl transition-colors font-medium ml-2"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                fontSize: "13px",
+                fontWeight: 600,
+                backgroundColor: "var(--accent)",
+                color: "white",
+                padding: "8px 16px",
+                borderRadius: "10px",
+                border: "none",
+                cursor: "pointer",
+                marginLeft: "8px",
+                transition: "background-color 0.15s",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "var(--accent-hover)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "var(--accent)")
+              }
             >
-              <LogIn size={15} />
+              <LogIn size={14} />
               Sign In
             </button>
-          ) : null}
+          )}
         </div>
       </div>
     </nav>
