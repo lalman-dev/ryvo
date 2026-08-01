@@ -3,12 +3,12 @@ import mongoose, { Schema, model, models } from "mongoose";
 export interface IVehicle {
   _id: string;
   name: string;
-  type: "sedan" | "suv" | "hatchback" | "luxury";
+  type: "sedan" | "suv" | "hatchback" | "luxury" | "van" | "truck" | "bike";
   description: string;
   pricePerDay: number;
   seats: number;
   transmission: "manual" | "automatic";
-  fuel: "petrol" | "diesel" | "electric";
+  fuel: "petrol" | "diesel" | "electric" | "hybrid";
   image: string;
   available: boolean;
   features: string[];
@@ -20,7 +20,7 @@ const VehicleSchema = new Schema<IVehicle>(
     name: { type: String, required: true },
     type: {
       type: String,
-      enum: ["sedan", "suv", "hatchback", "luxury"],
+      enum: ["sedan", "suv", "hatchback", "luxury", "van", "truck", "bike"],
       required: true,
     },
     description: { type: String, required: true },
@@ -33,7 +33,7 @@ const VehicleSchema = new Schema<IVehicle>(
     },
     fuel: {
       type: String,
-      enum: ["petrol", "diesel", "electric"],
+      enum: ["petrol", "diesel", "electric", "hybrid"],
       required: true,
     },
     image: { type: String, required: true },
