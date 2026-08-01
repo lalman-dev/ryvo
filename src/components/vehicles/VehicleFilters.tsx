@@ -24,66 +24,130 @@ export default function VehicleFilters({ onFilterChange }: FiltersProps) {
   };
 
   const handlePriceChange = (key: "minPrice" | "maxPrice", value: string) => {
-    const updated = {
-      minPrice,
-      maxPrice,
-      [key]: value,
-    };
+    const updated = { minPrice, maxPrice, [key]: value };
     if (key === "minPrice") setMinPrice(value);
     if (key === "maxPrice") setMaxPrice(value);
     onFilterChange({ type: activeType, ...updated });
   };
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 mb-8">
-      <div className="flex items-center gap-2 mb-4 text-zinc-300 font-semibold text-sm">
-        <SlidersHorizontal size={16} />
+    <div
+      style={{
+        backgroundColor: "var(--bg-secondary)",
+        border: "1px solid var(--border-primary)",
+        borderRadius: "16px",
+        padding: "20px 24px",
+        marginBottom: "32px",
+      }}
+    >
+      {/* Header */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          color: "var(--text-secondary)",
+          fontWeight: 600,
+          fontSize: "13px",
+          marginBottom: "16px",
+        }}
+      >
+        <SlidersHorizontal size={15} style={{ color: "var(--accent)" }} />
         Filter Vehicles
       </div>
 
-      {/* Type tabs */}
-      <div className="flex flex-wrap gap-2 mb-5">
-        {TYPES.map((type) => (
-          <button
-            key={type}
-            onClick={() => handleTypeChange(type)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium capitalize transition-all ${
-              activeType === type
-                ? "bg-blue-600 text-white"
-                : "bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700"
-            }`}
-          >
-            {type}
-          </button>
-        ))}
+      {/* Type capsules */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "8px",
+          marginBottom: "20px",
+        }}
+      >
+        {TYPES.map((type) => {
+          const isActive = activeType === type;
+          return (
+            <button
+              key={type}
+              onClick={() => handleTypeChange(type)}
+              style={{
+                padding: "6px 16px",
+                borderRadius: "9999px",
+                fontSize: "13px",
+                fontWeight: 500,
+                textTransform: "capitalize",
+                cursor: "pointer",
+                transition: "all 0.15s",
+                border: isActive
+                  ? "1px solid var(--accent)"
+                  : "1px solid var(--border-primary)",
+                backgroundColor: isActive
+                  ? "var(--accent)"
+                  : "var(--bg-tertiary)",
+                color: isActive ? "white" : "var(--text-secondary)",
+              }}
+            >
+              {type}
+            </button>
+          );
+        })}
       </div>
 
       {/* Price range */}
-      <div className="flex items-center gap-3">
-        <div className="flex-1">
-          <label className="text-xs text-zinc-500 mb-1 block">
-            Min Price (AED/day)
-          </label>
-          <input
-            type="number"
-            placeholder="0"
-            value={minPrice}
-            onChange={(e) => handlePriceChange("minPrice", e.target.value)}
-            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="text-xs text-zinc-500 mb-1 block">
-            Max Price (AED/day)
-          </label>
-          <input
-            type="number"
-            placeholder="1000"
-            value={maxPrice}
-            onChange={(e) => handlePriceChange("maxPrice", e.target.value)}
-            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-blue-500 transition-colors"
-          />
-        </div>
+      <div
+        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}
+      >
+        {[
+          {
+            key: "minPrice" as const,
+            label: "Min Price (AED/day)",
+            placeholder: "0",
+            value: minPrice,
+          },
+          {
+            key: "maxPrice" as const,
+            label: "Max Price (AED/day)",
+            placeholder: "1000",
+            value: maxPrice,
+          },
+        ].map((field) => (
+          <div key={field.key}>
+            <label
+              style={{
+                display: "block",
+                fontSize: "11px",
+                color: "var(--text-muted)",
+                marginBottom: "6px",
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+              }}
+            >
+              {field.label}
+            </label>
+            <input
+              type="number"
+              placeholder={field.placeholder}
+              value={field.value}
+              onChange={(e) => handlePriceChange(field.key, e.target.value)}
+              style={{
+                width: "100%",
+                backgroundColor: "var(--bg-tertiary)",
+                border: "1px solid var(--border-primary)",
+                borderRadius: "10px",
+                padding: "9px 12px",
+                fontSize: "13px",
+                color: "var(--text-primary)",
+                outline: "none",
+                transition: "border-color 0.15s",
+              }}
+              onFocus={(e) => (e.target.style.borderColor = "var(--accent)")}
+              onBlur={(e) =>
+                (e.target.style.borderColor = "var(--border-primary)")
+              }
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
