@@ -63,13 +63,13 @@ export default function VehicleFilters({ onFilterChange }: FiltersProps) {
     <div style={{ marginBottom: "32px" }}>
       {/* Category capsules */}
       <div
+        className="hide-scrollbar"
         style={{
           display: "flex",
           gap: "8px",
           overflowX: "auto",
           paddingBottom: "4px",
           marginBottom: "16px",
-          scrollbarWidth: "none",
         }}
       >
         {CATEGORIES.map((cat) => {
