@@ -146,15 +146,16 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## Roadmap
 
-- [ ] Email and password authentication
-- [ ] Extended vehicle catalog — bikes, vans, trucks, luxury fleet
-- [ ] Category filter capsules
-- [ ] Dark / light theme toggle with premium design system
+- [x] Email and password authentication
+- [x] Extended vehicle catalog — bikes, vans, trucks, luxury fleet
+- [x] Category filter capsules with per-type accent colors
+- [x] Dark / light theme toggle with premium design system
 - [ ] Booking cancellation
 - [ ] Admin dashboard
-- [ ] Razorpay payment integration
+- [ ] Razorpay payment integration (mock)
 - [ ] Real-time vehicle availability
 - [ ] Driver dashboard
+- [ ] Mobile app (React Native)
 
 ---
 
