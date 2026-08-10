@@ -23,7 +23,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ryvo — Premium Vehicle Booking",
     description: "Book premium vehicles instantly.",
+    images: ["/og-image.png"],
     type: "website",
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 
