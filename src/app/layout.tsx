@@ -25,6 +25,13 @@ export const metadata: Metadata = {
     description: "Book premium vehicles instantly.",
     images: ["/og-image.png"],
     type: "website",
+    url: "https://ryvo-lux.vercel.app",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ryvo — Premium Vehicle Booking",
+    description: "Book premium vehicles instantly.",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: "/favicon.ico",
