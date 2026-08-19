@@ -96,7 +96,17 @@ export default function VehicleDetailClient({ vehicle }: Props) {
         }
         throw new Error(data.error || "Booking failed");
       }
-      router.push("/bookings?success=true");
+
+      const checkoutRes = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bookingId: data.booking._id }),
+      });
+      const checkoutData = await checkoutRes.json();
+      if (!checkoutRes.ok || !checkoutData.url) {
+        throw new Error(checkoutData.error || "Could not start payment");
+      }
+      window.location.href = checkoutData.url;
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -582,7 +592,7 @@ export default function VehicleDetailClient({ vehicle }: Props) {
                     e.currentTarget.style.backgroundColor = "var(--accent)";
                 }}
               >
-                {loading ? "Confirming..." : "Confirm Booking"}
+                {loading ? "Redirecting to payment..." : "Book & Pay"}
               </button>
 
               <p
@@ -593,7 +603,7 @@ export default function VehicleDetailClient({ vehicle }: Props) {
                   marginTop: "12px",
                 }}
               >
-                You'll be redirected to sign in if not logged in
+                You'll be redirected to Stripe to complete payment
               </p>
             </div>
           </motion.div>
