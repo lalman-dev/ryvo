@@ -41,7 +41,8 @@ export async function POST(req: NextRequest) {
       totalDays,
       totalPrice,
       pickupLocation,
-      status: "confirmed",
+      status: "pending",
+      paymentStatus: "pending",
     });
 
     return NextResponse.json({ booking }, { status: 201 });
