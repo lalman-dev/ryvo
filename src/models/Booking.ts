@@ -9,6 +9,8 @@ export interface IBooking {
   totalDays: number;
   totalPrice: number;
   status: "pending" | "confirmed" | "cancelled";
+  paymentStatus: "pending" | "paid" | "failed";
+  stripeSessionId?: string;
   pickupLocation: string;
   createdAt: Date;
 }
@@ -16,11 +18,7 @@ export interface IBooking {
 const BookingSchema = new Schema<IBooking>(
   {
     userId: { type: String, required: true },
-    vehicleId: {
-      type: Schema.Types.ObjectId,
-      ref: "Vehicle",
-      required: true,
-    },
+    vehicleId: { type: Schema.Types.ObjectId, ref: "Vehicle", required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     totalDays: { type: Number, required: true },
@@ -30,6 +28,12 @@ const BookingSchema = new Schema<IBooking>(
       enum: ["pending", "confirmed", "cancelled"],
       default: "pending",
     },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid", "failed"],
+      default: "pending",
+    },
+    stripeSessionId: { type: String },
     pickupLocation: { type: String, required: true },
   },
   { timestamps: true },
