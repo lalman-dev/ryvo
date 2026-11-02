@@ -348,7 +348,7 @@ export default function LoginPage() {
             color: "var(--text-muted)",
           }}
         >
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/register"
             style={{
@@ -362,7 +362,7 @@ export default function LoginPage() {
         </p>
 
         <p style={{ textAlign: "center", marginTop: "12px" }}>
-          <a
+          <Link
             href="/vehicles"
             style={{
               fontSize: "13px",
@@ -371,7 +371,7 @@ export default function LoginPage() {
             }}
           >
             ← Browse without signing in
-          </a>
+          </Link>
         </p>
       </motion.div>
     </main>

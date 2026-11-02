@@ -41,6 +41,8 @@ export default function VehiclesPage() {
   }, []);
 
   useEffect(() => {
+    // Data fetch on filter change; setLoading inside is intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchVehicles(filters);
   }, [filters, fetchVehicles]);
 

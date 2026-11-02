@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { seedVehicles } from "@/lib/seed";
 
 export async function GET() {
-  if (process.env.NODE_ENV === "production") {
+  if (
+    process.env.NODE_ENV === "production" &&
+    process.env.ALLOW_SEED !== "true"
+  ) {
     return NextResponse.json({ error: "Not allowed" }, { status: 403 });
   }
 

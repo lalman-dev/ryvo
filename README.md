@@ -211,3 +211,24 @@ Open [http://localhost:3000](http://localhost:3000) 🎉
 
 **Lalman** — Full-Stack Engineer, Frontend-Focused
 [🌐 lalman.dev](https://lalman.dev) · [💻 github.com/lalman-dev](https://github.com/lalman-dev) · [🔗 linkedin.com/in/lalman-dev](https://linkedin.com/in/lalman-dev)
+
+---
+
+## 🐳 Run with Docker
+
+```bash
+cp .env.example .env   # fill in AUTH_SECRET, Google and Stripe keys
+docker compose up --build
+```
+
+The app runs on http://localhost:3000 with a local MongoDB container. The image is a multi-stage build (deps → build → slim standalone runtime, non-root user).
+
+## ✅ Tests & CI
+
+```bash
+npm test          # Vitest: auth, booking, cancellation and checkout API routes
+npm run lint
+npm run typecheck
+```
+
+GitHub Actions (`.github/workflows/ci.yml`) runs lint, type-check, tests and build on every push and pull request, then verifies the Docker image builds.

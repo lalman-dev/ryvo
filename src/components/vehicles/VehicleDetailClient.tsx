@@ -603,7 +603,7 @@ export default function VehicleDetailClient({ vehicle }: Props) {
                   marginTop: "12px",
                 }}
               >
-                You'll be redirected to Stripe to complete payment
+                You&apos;ll be redirected to Stripe to complete payment
               </p>
             </div>
           </motion.div>
